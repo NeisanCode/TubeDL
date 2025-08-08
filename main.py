@@ -77,7 +77,7 @@ try:
                 '--merge-output-format "mkv" '
                 f'--output "{output_path}" '
                 "--limit-rate 3M --retries 10 --fragment-retries 10 --socket-timeout 30 "
-                "--force-ipv4 --throttled-rate 200K "
+                "--force-ipv4 --throttled-rate 100K "
                 '--user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" '
                 '--extractor-args "youtube:skip=hls,dash" '
                 '--compat-options "no-youtube-unavailable-videos" '
