@@ -1,7 +1,7 @@
 import os
 import subprocess
 from tkinter import filedialog, Tk
-from colorama import Fore, Back, init
+from colorama import Fore, init
 
 init(autoreset=True)
 root = Tk()
@@ -14,7 +14,7 @@ print(
 ╚══════════════════════════════════╝"""
 )
 
-print(Back.RED + "\n\n Options ")
+print(Fore.RED + "\n\n Options ")
 print("1. Télécharger une vidéo")
 print("2. Télécharger une playlist")
 print("3. Quitter\n\n")
