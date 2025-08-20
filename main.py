@@ -54,8 +54,8 @@ try:
             url = input("Entrez l'URL de la vidéo -> ")
             command = f'yt-dlp --ffmpeg-location "{ffmpeg}" -f "bestvideo[height<=1080]+bestaudio/best" -o "{output_path}" "{url}"'
             subprocess.run(command, shell=True, check=True)
-            print("\n📂 Dossier de téléchargement :")
-            print(output_path)
+            print(Fore.LIGHTGREEN_EX + "\n📂 Dossier de téléchargement :")
+            print(Fore.LIGHTGREEN_EX + output_path)
             break
 
         elif media_type == "2":
@@ -92,8 +92,8 @@ try:
                 f'"{url}"'
             )
             subprocess.run(command, shell=True, check=True)
-            print(Fore.light + "\n📂 Dossier de téléchargement :")
-            print(output_path)
+            print(Fore.LIGHTGREEN_EX + "\n📂 Dossier de téléchargement :")
+            print(Fore.LIGHTGREEN_EX + output_path)
             break
 
         elif media_type == "3":
