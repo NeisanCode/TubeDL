@@ -24,6 +24,7 @@ print("1. Télécharger une vidéo")
 print("2. Télécharger une playlist")
 print("3. Quitter\n\n")
 
+
 ffmpeg = os.path.join(base_path, "ffmpeg-7.1.1-essentials_build/bin/ffmpeg.exe")
 try:
     while True:
@@ -53,6 +54,8 @@ try:
             url = input("Entrez l'URL de la vidéo -> ")
             command = f'yt-dlp --ffmpeg-location "{ffmpeg}" -f "bestvideo[height<=1080]+bestaudio/best" -o "{output_path}" "{url}"'
             subprocess.run(command, shell=True, check=True)
+            print("\n📂 Dossier de téléchargement :")
+            print(output_path)
             break
 
         elif media_type == "2":
@@ -89,6 +92,8 @@ try:
                 f'"{url}"'
             )
             subprocess.run(command, shell=True, check=True)
+            print(Fore.light + "\n📂 Dossier de téléchargement :")
+            print(output_path)
             break
 
         elif media_type == "3":
