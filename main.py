@@ -1,3 +1,5 @@
+
+import sys
 import os
 import subprocess
 from tkinter import filedialog, Tk
@@ -13,14 +15,16 @@ print(
 ║         Youtube Downloader       ║
 ╚══════════════════════════════════╝"""
 )
-
+if getattr(sys, "frozen", False):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
 print(Fore.RED + "\n\n Options ")
 print("1. Télécharger une vidéo")
 print("2. Télécharger une playlist")
 print("3. Quitter\n\n")
 
-ffmpeg = "ffmpeg-7.1.1-essentials_build/bin/ffmpeg.exe"
-
+ffmpeg = os.path.join(base_path, "ffmpeg-7.1.1-essentials_build/bin/ffmpeg.exe")
 try:
     while True:
         media_type = input(Fore.LIGHTBLUE_EX + "Choisissez une option -> ")
