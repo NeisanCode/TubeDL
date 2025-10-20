@@ -1,4 +1,4 @@
-# YouTube Downloader
+# TubeDL
 
 A small Python command-line tool to download YouTube videos and extract audio quickly.
 
