@@ -105,7 +105,9 @@ while True:
                 else input("Entrez l’URL de la playlist -> ").strip()
             )
             ask_path = (
-                input("Choisir la destination du media ? (o/n) -> " + Style.RESET_ALL).strip().lower()
+                input("Choisir la destination du media ? (o/n) -> " + Style.RESET_ALL)
+                .strip()
+                .lower()
             )
             directory = media_path() if ask_path == "o" else os.getcwd()
             result_path = app_actions[choice](url, directory)
