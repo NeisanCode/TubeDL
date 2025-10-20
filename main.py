@@ -74,7 +74,6 @@ def close_app():
     sys.exit()
 
 
-# --- Interface console principale ---
 title = """╔══════════════════════╗
 ║  Youtube Downloader  ║
 ╚══════════════════════╝
