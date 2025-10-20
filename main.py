@@ -6,7 +6,6 @@ import os
 from pathlib import Path
 import tkinter as tk
 import tkinter.filedialog as tkf
-import json
 
 
 def download_video(url, dir=""):
@@ -32,7 +31,7 @@ def download_video(url, dir=""):
 def download_playlist(url, dir=""):
     options = {
         "format": "bv*+ba/b",
-        "outtmpl": f"{dir}Playlists/%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s",
+        "outtmpl": f"{dir}%(playlist_title)s/%(playlist_index)s - %(title)s.%(ext)s",
         "yesplaylist": True,
         "quiet": False,
         "merge_output_format": "mp4",
@@ -89,11 +88,17 @@ while True:
     choice = input(Fore.LIGHTGREEN_EX + "Choisissez une option (1, 2, 3): ").strip()
     if choice in app_actions:
         if choice != "3":
-            url = input("Entrez l’URL de la vidéo ou de la playlist -> ").strip()
+            url = (
+                input("Entrez l’URL de la vidéo -> ").strip()
+                if choice == "1"
+                else input("Entrez l’URL de la playlist -> ").strip()
+            )
             path = input("Choisir la destination du media (o/n) ? -> ").strip()
             if path == "o":
-                path = media_path()
+                dir = media_path()
+                path = dir if dir else ""
             app_actions[choice](url, path)
+            print(Fore.LIGHTBLUE_EX + f"Téléchargement Terminé : {path}")
             restart = input(Fore.LIGHTGREEN_EX + "Voulez vous continuez ? (o/n) -> ")
             if restart in res_actions:
                 res_actions[restart](title)
@@ -103,5 +108,3 @@ while True:
             app_actions[choice](None)
     else:
         print(Fore.LIGHTRED_EX + "Choix invalide !!!")
-
-media_path()
