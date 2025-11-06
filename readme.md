@@ -243,4 +243,3 @@ This tool is for personal use only. Please respect copyright laws and YouTube's 
 
 **Made with ❤️ by Mister Neisan**
 
-If you find this project useful, please give it a ⭐!
