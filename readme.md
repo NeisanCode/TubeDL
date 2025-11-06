@@ -51,7 +51,7 @@ The `requirements.txt` includes:
 
 FFmpeg is required for video processing and format conversion.
 
-#### Windows:
+#### Windows
 
 1. Download FFmpeg from [ffmpeg.org](https://ffmpeg.org/download.html)
 2. Extract the ZIP file
@@ -60,7 +60,7 @@ FFmpeg is required for video processing and format conversion.
 
 **Quick Download**: [Windows Builds](https://www.gyan.dev/ffmpeg/builds/)
 
-#### Linux (Ubuntu/Debian):
+#### Linux (Ubuntu/Debian)
 
 ```bash
 sudo apt update
@@ -69,7 +69,7 @@ sudo apt install ffmpeg
 
 FFmpeg location: `/usr/bin/ffmpeg`
 
-#### macOS:
+#### macOS
 
 ```bash
 brew install ffmpeg
@@ -126,15 +126,15 @@ python main.py
 On first launch, you need to configure three things:
 
 1. **Download Directory**
-    
+
     - Click "Locate directory"
     - Select where you want videos saved
 2. **Cookies File**
-    
+
     - Click "Locate Cookies"
     - Select the `cookies.txt` file you exported
 3. **FFmpeg Executable**
-    
+
     - Click "Locate FFmpeg"
     - Select the FFmpeg executable:
         - Windows: `ffmpeg.exe`
@@ -155,8 +155,9 @@ On first launch, you need to configure three things:
 
 ## 🖼️ Screenshots
 
-![[Pasted image 20251106210006.png]]
-![[Pasted image 20251106210050.png]]
+![app interface](images/interface.png)
+![tree structure](images/tree.png)
+
 ```
 [Main Interface] [Download in Progress] [Success Message]
 ```
