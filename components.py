@@ -15,7 +15,6 @@ class LabeledEntry(ctk.CTkFrame):
             textvariable=text_var,
             width=250,
             placeholder_text=placeholder,
-            font=font,
         )
         self.entry.pack(pady=(5, 0))
 
