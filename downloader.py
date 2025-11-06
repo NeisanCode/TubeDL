@@ -1,12 +1,15 @@
 import yt_dlp
+import yt_dlp.utils
 
 
-def downloader(url, media_type, media_path, progress_hook: callable):
+def downloader(
+    url, media_type, media_path, cookie_path, ffmpeg_path, progress_hook: callable
+):
     ydl_opts = {
-        "cookies": "cookies.txt",
+        "cookies": cookie_path,
         "format": "bestvideo+bestaudio/best",
         "merge_output_format": "mp4",
-        "ffmpeg_location": "/usr/bin/ffmpeg",
+        "ffmpeg_location": ffmpeg_path,
         "quiet": False,
         "progress_hooks": [lambda d: progress_hook(d)],
     }
@@ -23,6 +26,8 @@ def downloader(url, media_type, media_path, progress_hook: callable):
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-        print("Download completed!")
+
+    except yt_dlp.utils.DownloadError as e:
+        raise
     except Exception as e:
-        print(f"Download failed: {e}")
+        raise
