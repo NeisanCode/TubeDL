@@ -336,6 +336,11 @@ class TubDL(ctk.CTk):
         self.location_widget.get_button().configure(state=state)
         self.cookie_widget.get_button().configure(state=state)
         self.ffmpeg_widget.get_button().configure(state=state)
+        self.progress_label.set("Download in progress...")
+
+        if state == "enabled":
+            self.progress_label.set("")
+            self.progress_var.set(0)
 
     def update_progress(self, d):
         """
