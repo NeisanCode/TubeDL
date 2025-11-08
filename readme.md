@@ -32,7 +32,7 @@ A powerful YouTube video downloader with a modern dark-themed GUI, designed to d
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/tubedl.git
+git clone https://github.com/NeisanCode/TubeDL.git
 cd tubedl
 ```
 
