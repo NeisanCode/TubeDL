@@ -14,7 +14,6 @@ Features:
 
 import os
 import customtkinter as ctk
-import tkfilebrowser
 from tkinter import StringVar, filedialog, messagebox
 import threading
 
