@@ -14,6 +14,7 @@ Features:
 
 import os
 import customtkinter as ctk
+import tkfilebrowser
 from tkinter import StringVar, filedialog, messagebox
 import threading
 
@@ -63,22 +64,21 @@ class TubDL(ctk.CTk):
         self.title("TubeDL")
         self.geometry("800x500")
         self.resizable(False, False)
+        self.update()
         logo = "icons/logo.ico"
         create_icon(self, logo)
 
-        self.location = load_location()
+        location = load_location()
         self.url_var = ctk.StringVar()
         self.type_var = ctk.StringVar(value="Video")
 
-        path_var = self.shorten_path(self.location.get("path", "No Folder selected"))
+        path_var = self.shorten_path(location.get("path", "No Folder selected"))
         self.path_var = ctk.StringVar(value=path_var)
 
-        cookie_path = self.shorten_path(
-            self.location.get("cookies", "Cookies not found")
-        )
+        cookie_path = self.shorten_path(location.get("cookies", "Cookies not found"))
         self.cookie_path = ctk.StringVar(value=cookie_path)
 
-        ffmpeg_path = self.shorten_path(self.location.get("ffmpeg", "FFmpeg not found"))
+        ffmpeg_path = self.shorten_path(location.get("ffmpeg", "FFmpeg not found"))
         self.ffmpeg_path = ctk.StringVar(value=ffmpeg_path)
 
         self.progress_var = ctk.DoubleVar(value=0)
@@ -223,7 +223,7 @@ class TubDL(ctk.CTk):
             key (str): The storage key for saving the file path
             filetypes (tuple): File type filter for the dialog (name, pattern)
         """
-        file = filedialog.askopenfilename(filetypes=[filetypes])
+        file = filedialog.askopenfilename(title="Cookie file", filetypes=[filetypes])
         if file:
             var.set(self.shorten_path(file))
             save_location({key: file})
@@ -277,19 +277,20 @@ class TubDL(ctk.CTk):
             - yt_dlp.utils.DownloadError: Invalid URLs or download failures
             - Exception: Any unexpected errors during download
         """
+        location = load_location()
         url = self.url_var.get()
         media_type = self.type_var.get()
-        path = self.location.get("path")
-        cookie_path = self.location.get("cookies")
-        ffmpeg_path = self.location.get("ffmpeg")
+        path = location.get("path")
+        cookie_path = location.get("cookies")
+        ffmpeg_path = location.get("ffmpeg")
 
-        errors = {
-            not url: "Error: Please enter a valid URL.",
-            not path: "Error: Please select a download folder.",
-            not cookie_path: "Error: Please select a cookie file.",
-            not ffmpeg_path: "Error: Please select the FFmpeg file.",
-        }
-        for condition, message in errors.items():
+        checks = [
+            (not url, "Error: Please enter a valid URL."),
+            (not path, "Error: Please select a download folder."),
+            (not cookie_path, "Error: Please select a cookie file."),
+            (not ffmpeg_path, "Error: Please select the FFmpeg file."),
+        ]
+        for condition, message in checks:
             if condition:
                 messagebox.showwarning("Error", message)
                 return
