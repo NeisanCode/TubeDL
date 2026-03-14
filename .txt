@@ -1,0 +1,35 @@
+.
+├── assets
+│   └── icons
+│       ├── cookie.png
+│       ├── download.png
+│       ├── ffmpeg.png
+│       ├── folder.png
+│       └── logo.ico
+├── core
+│   ├── config.py
+│   └── videoInfo.py
+├── main.py
+├── models
+│   ├── __init__.py
+│   ├── media.py
+│   ├── playlist_item.py
+│   ├── playlist.py
+│   ├── short.py
+│   └── video.py
+├── pyproject.toml
+├── README.md
+├── service
+│   ├── downloader.py
+│   └── __init__.py
+├── utils
+│   └── helper.py
+├── uv.lock
+└── view
+    ├── main.py
+    └── screen
+        ├── about.py
+        ├── download.py
+        └── home.py
+
+9 directories, 24 files
