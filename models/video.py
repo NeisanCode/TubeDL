@@ -1,7 +1,7 @@
-from models.media import Media
+from models.base_media import BaseMedia
 
 
-class Video(Media):
-    def __init__(self, title, url, duration, resolution_list=None):
-        super().__init__(title, url, duration)
-        self.resolutions = resolution_list or []
+class Video(BaseMedia):
+    def __init__(self, title, url, res_list=None):
+        super().__init__(title, url)
+        self.resols = res_list or []

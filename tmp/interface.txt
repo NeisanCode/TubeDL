@@ -1,0 +1,35 @@
+    def search_video(self):
+        url = self.url_entry.get()
+        if url:
+            self.preview_text.configure(text=f"🔍 Recherche: {url[:50]}...")
+
+    def start_download(self):
+        url = self.url_entry.get()
+        if not url:
+            messagebox.showwarning("Attention", "Veuillez entrer une URL YouTube")
+            return
+
+        quality = self.quality_var.get()
+
+        self.download_btn.configure(
+            text="⏳ Téléchargement en cours...", state="disabled"
+        )
+
+        def download_task():
+            import time
+
+            time.sleep(2)
+            self.after(0, lambda: self.download_complete())
+
+        threading.Thread(target=download_task, daemon=True).start()
+
+    def download_complete(self):
+        self.download_btn.configure(text="⬇️ TÉLÉCHARGER", state="normal")
+        messagebox.showinfo("Succès", "Téléchargement terminé avec succès !")
+        self.url_entry.delete(0, "end")
+
+    def get_url(self):
+        return self.url_entry.get()
+
+    def get_quality(self):
+        return self.quality_var.get()
