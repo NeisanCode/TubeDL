@@ -1,7 +1,6 @@
 from core.config import Config
 import yt_dlp
 import os
-
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video

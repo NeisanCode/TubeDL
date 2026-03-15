@@ -3,7 +3,6 @@ import customtkinter as ctk
 from view.screen.widget.home import (
     ContentContainer,
     DownloadButton,
-    HeaderFrame,
     SearchBarFrame,
 )
 
@@ -20,12 +19,12 @@ class HomePage(ctk.CTkFrame):
 
     def create_widgets(self):
         # Header
-        self.header = HeaderFrame(self, self.colors)
-        self.header.grid(row=0, column=0, sticky="ew", pady=(0, 20))
+        # self.header = HeaderFrame(self, self.colors)
+        # self.header.grid(row=0, column=0, sticky="ew", pady=(0, 20))
 
         # Container principal
         self.main_container = ctk.CTkFrame(self, fg_color="transparent", width=300)
-        self.main_container.grid(row=1, column=0, sticky="n")
+        self.main_container.grid(row=1, column=0, pady=(20, 0), sticky="n")
 
         # Barre de recherche
         self.search_bar = SearchBarFrame(self.main_container, self.colors)

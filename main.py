@@ -1,7 +1,5 @@
-from pprint import pprint
 from service.downloader import Downloader
 from service.youtube_service import YouTubeService
-
 from view import App
 
 

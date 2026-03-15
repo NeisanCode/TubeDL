@@ -21,7 +21,7 @@ class Sidebar(ctk.CTkFrame):
 
         self.logo_label = ctk.CTkLabel(
             self.logo_frame,
-            text="⬇️ YT Downloader",
+            text="⬇️ TubeDL",
             font=ctk.CTkFont(size=20, weight="bold"),
             text_color=self.colors["accent_secondary"],
         )
@@ -49,6 +49,7 @@ class Sidebar(ctk.CTkFrame):
                 corner_radius=10,
                 border_width=0,
                 command=lambda k=key: self.handle_nav_click(k),
+                cursor="hand2",
             )
             btn.pack(fill="x", pady=5)
             self.nav_buttons[key] = btn

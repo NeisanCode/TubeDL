@@ -43,7 +43,7 @@ class SearchBarFrame(ctk.CTkFrame):
             self,
             fg_color=self.colors["bg_secondary"],
             corner_radius=10,
-            border_width=1,
+            border_width=2,
             border_color=self.colors["border"],
             width=700,
             height=50,
@@ -74,6 +74,7 @@ class SearchBarFrame(ctk.CTkFrame):
             fg_color=self.colors["accent_primary"],
             hover_color=self.colors["accent_hover"],
             font=ctk.CTkFont(size=16, weight="bold"),
+            cursor="hand2",
         )
         self.search_btn.place(relx=1.0, rely=0.5, anchor="e", x=-5)
 
@@ -141,6 +142,7 @@ class QualityFrame(ctk.CTkFrame):
                 value=value,
                 fg_color=self.colors["accent_primary"],
                 width=20,
+                cursor="hand2",
             )
             radio.grid(row=0, column=0, sticky="w")
 
@@ -184,4 +186,5 @@ class DownloadButton(ctk.CTkButton):
             corner_radius=12,
             fg_color=colors["accent_primary"],
             hover_color=colors["accent_hover"],
+            cursor="hand2",
         )
