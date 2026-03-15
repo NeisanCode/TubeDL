@@ -27,7 +27,6 @@ class HomePage(ctk.CTkFrame):
         self.main_container = ctk.CTkFrame(self, fg_color="transparent", width=300)
         self.main_container.grid(row=1, column=0, sticky="n")
 
-
         # Barre de recherche
         self.search_bar = SearchBarFrame(self.main_container, self.colors)
         self.search_bar.grid(row=0, column=0, sticky="ew", pady=(0, 20))
