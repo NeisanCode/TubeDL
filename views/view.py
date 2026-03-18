@@ -1,13 +1,12 @@
 import customtkinter as ctk
-from view.screen.widget.sidebar import Sidebar
-from view.screen.home_page import HomePage
+from .home import HomePage
+from .shared import Sidebar
 
-# Configuration du thème
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
 
-class App(ctk.CTk):
+class MainView(ctk.CTk):
     def __init__(self):
         super().__init__()
 
@@ -53,6 +52,4 @@ class App(ctk.CTk):
 
     def handle_nav_click(self, page):
         """Gère les clics de navigation"""
-        print(f"Navigation vers: {page}")
-        # Ici tu peux ajouter la logique pour changer de page
-        # Ex: self.main_layout.switch_page(page)
+        pass

@@ -33,8 +33,9 @@ class Sidebar(ctk.CTkFrame):
 
         nav_items = [
             ("🏠 Home", "home"),
-            ("📥 Downloads", "downloads"),
-            ("ℹ️ About", "about"),
+            ("📥 Téléchargements", "téléchargements"),
+            ("❓ À propos", "à propos"),
+            ("⚙️ Parametres", "parametres"),
         ]
 
         for i, (text, key) in enumerate(nav_items):
