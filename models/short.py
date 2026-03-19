@@ -1,7 +1,7 @@
-from models.base_media import BaseMedia
+from models.video import Video
 
 
-class Short(BaseMedia):
-    def __init__(self, title, url, thumbnail):
-        super().__init__(title, url, thumbnail)
+class Short(Video):
+    def __init__(self, id, title, url, thumbnail, res_list=None):
+        super().__init__(id, title, url, thumbnail, res_list)
         self.is_vertical = True

@@ -11,3 +11,8 @@ def get_download_path():
 
 def download_ffmpeg(system):
     pass
+
+
+def get_node_path():
+    return shutil.which("node")
+

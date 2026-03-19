@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from tkinter import ttk
 
 class TubeDLApp(ctk.CTk):
     def __init__(self):

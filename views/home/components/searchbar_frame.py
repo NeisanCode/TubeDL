@@ -11,14 +11,13 @@ class SearchBarFrame(ctk.CTkFrame):
 
     def create_widgets(self):
         self.grid_columnconfigure(0, weight=1)
-
         self.url_frame = ctk.CTkFrame(
             self,
             fg_color=self.colors["bg_secondary"],
             corner_radius=10,
             border_width=2,
             border_color=self.colors["border"],
-            width=700,
+            width=550,
             height=50,
         )
         self.url_frame.grid(row=0, column=0, sticky="n")

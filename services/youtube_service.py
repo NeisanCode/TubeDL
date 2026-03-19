@@ -1,5 +1,7 @@
 import yt_dlp
 from models import Video, Short, Playlist
+from core.config import Config
+from services.helpers import clean_url
 
 
 class YouTubeService:
@@ -8,35 +10,46 @@ class YouTubeService:
             "extract_flat": True,
             "quiet": True,
             "skip_download": True,
+            "noplaylist": True,
         }
 
     def analyze_url(self, url):
+        url = clean_url(url)
         with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
+            id = info.get("id")
 
             if info.get("_type") == "playlist":
                 thumbnail = self._get_playlist_thumbails(url)
                 return Playlist(
+                    id=id,
                     title=info.get("title"),
                     url=url,
                     thumbnail=thumbnail,
                     count=len(info.get("entries", [])),
                 )
 
+            thumbnail = self._build_thumbnail(id)
             is_short = "/shorts/" in url or (info.get("duration", 0) <= 60)
 
             if is_short:
                 return Short(
+                    id=id,
                     title=info.get("title"),
                     url=url,
+                    thumbnail=thumbnail,
                 )
-            thumbnail = self._get_video_thumbails(url)
+
             return Video(
+                id=id,
                 title=info.get("title"),
                 url=url,
                 thumbnail=thumbnail,
                 res_list=self._extract_resolutions(info),
             )
+
+    def _build_thumbnail(self, video_id: str) -> str:
+        return f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
 
     def _get_video_thumbails(self, url):
         with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
