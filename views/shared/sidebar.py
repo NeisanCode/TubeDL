@@ -33,9 +33,9 @@ class Sidebar(ctk.CTkFrame):
 
         nav_items = [
             ("🏠 Home", "home"),
-            ("📥 Téléchargements", "téléchargements"),
-            ("❓ À propos", "à propos"),
-            ("⚙️ Parametres", "parametres"),
+            ("📥 Téléchargements", "downloads"),
+            ("❓ À propos", "about"),
+            ("⚙️ Parametres", "settings"),
         ]
 
         for i, (text, key) in enumerate(nav_items):
@@ -49,7 +49,7 @@ class Sidebar(ctk.CTkFrame):
                 height=45,
                 corner_radius=10,
                 border_width=0,
-                command=lambda k=key: self.handle_nav_click(k),
+                command=lambda page=key: self.handle_nav_click(page),
                 cursor="hand2",
             )
             btn.pack(fill="x", pady=5)

@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from .home import HomePage
+from .download import DownloadsPage
+from .about import AboutPage
 from .shared import Sidebar
 
 ctk.set_appearance_mode("light")
@@ -50,6 +52,14 @@ class MainView(ctk.CTk):
         self.main_layout = HomePage(self, colors=self.colors)
         self.main_layout.grid(row=0, column=1, sticky="nsew", padx=30, pady=30)
 
-    def handle_nav_click(self, page):
-        """Gère les clics de navigation"""
-        pass
+    def handle_nav_click(self, page="home"):
+        if self.main_layout:
+            self.main_layout.destroy()
+        pages = {
+            "home": lambda: HomePage(self, colors=self.colors),
+            "downloads": lambda: DownloadsPage(self, colors=self.colors),
+            "about": lambda: AboutPage(self, colors=self.colors),
+            "settings": lambda: ctk.CTkFrame(self),
+        }
+        self.main_layout = pages.get(page, pages["home"])()
+        self.main_layout.grid(row=0, column=1, sticky="nsew", padx=30, pady=30)

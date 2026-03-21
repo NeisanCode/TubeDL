@@ -28,11 +28,8 @@ class Loader:
         self.spinner.start()
 
         def run():
-            try:
-                result = task_func(*args, **kwargs)
-                self.parent.after(0, lambda: self._on_task_finished(result))
-            except Exception:
-                self.parent.after(0, lambda: self._on_task_finished(None))
+            result = task_func(*args, **kwargs)
+            self.parent.after(0, lambda: self._on_task_finished(result))
 
         threading.Thread(target=run, daemon=True).start()
 

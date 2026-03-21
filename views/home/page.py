@@ -1,16 +1,8 @@
-from pprint import pprint
-
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
-
 from services.downloader import Downloader
-
-from .components import ContentContainer
-from .components import SearchBarFrame
-
-from models import Video
-from models import Playlist
-from models import Short
+from .components import ContentContainer, SearchBarFrame
+from models import Video, Playlist, Short
 from controllers import Controller
 from views.shared import Loader
 from views.utils import converto_img
@@ -75,7 +67,6 @@ class HomePage(ctk.CTkFrame):
         self.loader.show_spinner(Controller.analyse_url, url)
 
     def on_update_content(self):
-        self.result.thumbnail = converto_img(self.result.thumbnail)
         self.content.update_children(self.result)
 
     def handle_result(self, data):
@@ -86,4 +77,7 @@ class HomePage(ctk.CTkFrame):
         self.on_update_content()
 
     def on_download_click(self):
-        pass
+        if isinstance(self.result, Video):
+            self.result.resol_selected = self.content.get_resolution()
+        downloader = Downloader(self.result)
+        downloader.download_media()

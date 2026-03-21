@@ -1,28 +1,20 @@
 from urllib.parse import urlencode, urlparse, parse_qs, urlunparse
 
 
-def get_format_selector(res: str) -> str:
-    match res:
-        case "2160p" | "4k":
-            return "bv*[height<=2160]+ba/bv*[height<=1440]+ba/bv*[height<=1080]+ba/bv*[height<=720]+ba/bv*[height<=480]+ba/bv*[height<=360]+ba/b"
+def get_format_selector(res: str):
+    quality_map = {
+        "4k": 2160,
+        "2160p": 2160,
+        "1440p": 1440,
+        "1080p": 1080,
+        "720p": 720,
+        "480p": 480,
+        "360p": 360,
+    }
 
-        case "1440p":
-            return "bv*[height<=1440]+ba/bv*[height<=1080]+ba/bv*[height<=720]+ba/bv*[height<=480]+ba/bv*[height<=360]+ba/b"
+    max_res = quality_map.get(res, 1080)
 
-        case "1080p":
-            return "bv*[height<=1080]+ba/bv*[height<=720]+ba/bv*[height<=480]+ba/bv*[height<=360]+ba/b"
-
-        case "720p":
-            return "bv*[height<=720]+ba/bv*[height<=480]+ba/bv*[height<=360]+ba/b"
-
-        case "480p":
-            return "bv*[height<=480]+ba/bv*[height<=360]+ba/b"
-
-        case "360p":
-            return "bv*[height<=360]+ba/b"
-
-        case _:
-            return "bv*+ba/b"  # fallback total (meilleure qualité)
+    return f"bv*[height<={max_res}][vcodec^=avc1]+ba/" f"b[height<={max_res}]/" f"best"
 
 
 def clean_youtube_url(url):
@@ -41,8 +33,19 @@ def clean_url(url):
         # Exemple: ["https://youtu.be/Z2zD3EdjpNo", "list=PLKm..."]
         parties = url.split("?")
         url_base_avec_id = parties[0]
-        
+
         # L'url_base_avec_id contient déjà "https://youtu.be/ID_VIDEO"
         # On retourne simplement cette partie
         return url_base_avec_id
     return url
+
+
+def format_duration(seconds):
+    if not seconds:
+        return "0:00"
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+
+    if h:
+        return f"{h}:{m:02}:{s:02}"
+    return f"{m}:{s:02}"

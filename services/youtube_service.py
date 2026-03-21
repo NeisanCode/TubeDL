@@ -1,7 +1,6 @@
 import yt_dlp
 from models import Video, Short, Playlist
-from core.config import Config
-from services.helpers import clean_url
+from services.helpers import clean_url, format_duration
 
 
 class YouTubeService:
@@ -18,6 +17,7 @@ class YouTubeService:
         with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             id = info.get("id")
+            duration = info.get("duration", 0)
 
             if info.get("_type") == "playlist":
                 thumbnail = self._get_playlist_thumbails(url)
@@ -30,14 +30,15 @@ class YouTubeService:
                 )
 
             thumbnail = self._build_thumbnail(id)
-            is_short = "/shorts/" in url or (info.get("duration", 0) <= 60)
-
+            is_short = "/shorts/" in url or (duration <= 60)
+            formatted_duration = format_duration(duration)
             if is_short:
                 return Short(
                     id=id,
                     title=info.get("title"),
                     url=url,
                     thumbnail=thumbnail,
+                    duration=formatted_duration,
                 )
 
             return Video(
@@ -45,6 +46,7 @@ class YouTubeService:
                 title=info.get("title"),
                 url=url,
                 thumbnail=thumbnail,
+                duration=formatted_duration,
                 res_list=self._extract_resolutions(info),
             )
 
@@ -66,7 +68,6 @@ class YouTubeService:
         with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
             video_info = ydl.extract_info(video_url, download=False)
             thumbnail = video_info["thumbnail"]
-
         return thumbnail
 
     def _extract_resolutions(self, info):
@@ -75,4 +76,4 @@ class YouTubeService:
             for f in info["formats"]
             if f.get("height") and f.get("vcodec") != "none"
         )
-        return sorted(resolutions, key=lambda x: int(x[:-1]), reverse=True)
+        return sorted(resolutions, key=lambda x: int(x[:-1]), reverse=True)[:4]

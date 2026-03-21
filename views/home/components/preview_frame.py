@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from core.Icon_manager import Icons
+from views.utils.image import converto_img
 
 
 class PreviewFrame(ctk.CTkFrame):
@@ -31,9 +31,10 @@ class PreviewFrame(ctk.CTkFrame):
         self.preview_text.place(relx=0.5, rely=0.55, anchor="center")
 
     def set_image(self, image):
+        preview_img = converto_img(image)
         self.preview_icon.place_forget()
         self.preview_text.configure(
-            image=image,
+            image=preview_img,
             text="▶",
             text_color="#ff6060",
             font=ctk.CTkFont(size=48),

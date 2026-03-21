@@ -27,13 +27,15 @@ class ContentContainer(ctk.CTkFrame):
             columnspan=2,
             pady=(15, 30),
         )
-        self.setsate_btn()
 
     def update_children(self, media: Video | Playlist | Short):
         self.preview_frame.set_image(media.thumbnail)
-        # self.quality_frame.set_resols(media.resols)
+        media_resols = media.res_list if isinstance(media, Video) else []
+        self.quality_frame.set_resols(media_resols)
+        self.setsate_btn()
+
     def setsate_btn(self):
         self.download_btn.set_state("normal")
 
-    def get_current_res(self):
+    def get_resolution(self):
         return self.quality_frame.get_resols()
