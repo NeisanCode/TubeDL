@@ -12,6 +12,6 @@ class Controller:
 
     @staticmethod
     @handle_error
-    def download(media):
-        downloader = Downloader(media)
+    def download(media, queue):
+        downloader = Downloader(media, queue)
         downloader.download_media()

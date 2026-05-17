@@ -15,5 +15,4 @@ def handle_error(func):
                 icon="cancel",
             )
             return
-
     return wrapper

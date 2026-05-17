@@ -13,3 +13,11 @@ ffprobe*
 Downloads/
 tmp/
 cookies/
+
+# IDE files
+.vscode/
+.idea/
+*.txt
+
+# folders
+bin/

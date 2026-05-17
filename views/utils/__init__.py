@@ -1,1 +1,0 @@
-from .image import converto_img
