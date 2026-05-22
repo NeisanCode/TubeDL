@@ -1,0 +1,6 @@
+{
+  "video_path": "./video",
+  "playlist_path": "./playlist",
+  "theme": "System",
+  "cookie_file": "./cookie.txt"
+}

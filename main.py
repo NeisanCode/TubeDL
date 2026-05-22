@@ -1,5 +1,5 @@
-from views.home import home
+from views import App
 
 if __name__ == "__main__":
-    app = home.Home()
+    app = App()
     app.mainloop()

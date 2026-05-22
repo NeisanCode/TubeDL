@@ -1,13 +1,12 @@
 import re
 import os
 from queue import Queue
-from pprint import pprint
 import yt_dlp
 from core.config import Config
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video
-from services.helpers import get_format_selector
+from .helpers import get_format_selector
 
 
 def _strip_ansi(text: str) -> str:
@@ -35,6 +34,7 @@ class Downloader:
             case Video():
                 self._download_video(self.media.url)
             case Short():
+                print("downloading short")
                 self._download_short(self.media.url)
             case Playlist():
                 self._download_playlist(self.media.url)
@@ -72,33 +72,39 @@ class Downloader:
 
     def _progress_hook(self, d: dict):
         if d["status"] == "downloading":
+            # On extrait le numéro de la vidéo actuelle depuis l'info_dict de yt-dlp
+            info = d.get("info_dict", {})
+            # 'playlist_index' donne la position de la vidéo (ex: 1, 2, 3...)
+            current_video = info.get("playlist_index", 1)
+
             if self.queue:
                 downloaded = d.get("downloaded_bytes", 0)
                 total = d.get("total_bytes") or d.get("total_bytes_estimate", 0)
                 percent = (downloaded / total) if total else 0
+                
                 self.queue.put(
                     {
                         "percent": percent,
                         "speed": _strip_ansi(d.get("_speed_str", "—")).strip(),
+                        "current_video": current_video, # 👈 ON ENVOIE L'INDEX ICI !
                     }
                 )
             else:
-                title = d["info_dict"].get("title", "Inconnu")
+                title = info.get("title", "Inconnu")
                 percent = d.get("_percent_str", "?%").strip()
                 speed = d.get("_speed_str", "?").strip()
                 print(
                     f"\r  ⬇ [{title}] {percent}  vitesse: {speed}", end="", flush=True
                 )
-
     def _postprocessor_hook(self, d: dict):
+        print(d.get("status"), d.keys())
         if d["status"] == "finished":
             if self.queue:
-                self.queue.put({"percent": 1.0, "speed": "✔ Terminé"})
-            elif self.queue.empty():
-                self.queue.put(
-                    {
-                        "percent": 1.0,
-                        "speed": "✔ Terminé",
-                        "status": "downloaded",
-                    }
-                )
+                info = d.get("info_dict", {})
+                current_video = info.get("playlist_index", 1) # 👈 Récupération de l'index
+                
+                self.queue.put({
+                    "percent": 1.0, 
+                    "speed": "✔ Terminé",
+                    "current_video": current_video # 👈 Transmis aussi ici
+                })

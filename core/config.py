@@ -19,6 +19,6 @@ class Config:
     browser_name = _browser_map.get(SYSTEM_OS, "chrome")
     ffmpeg_path = get_ffmpeg_path()
     node_path = get_node_path()
-    
+
     if ffmpeg_path is None:
         ffmpeg_path = download_ffmpeg(SYSTEM_OS)

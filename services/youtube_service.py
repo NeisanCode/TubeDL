@@ -16,25 +16,26 @@ class YouTubeService:
         url = clean_url(url)
         with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            id = info.get("id")
+            media_id = info.get("id")
             duration = info.get("duration", 0)
 
             if info.get("_type") == "playlist":
                 thumbnail = self._get_playlist_thumbails(url)
                 return Playlist(
-                    id=id,
+                    id=media_id,
                     title=info.get("title"),
                     url=url,
                     thumbnail=thumbnail,
-                    count=len(info.get("entries", [])),
+                    count=info.get("playlist_count") or len(info.get("entries", [])),
                 )
 
-            thumbnail = self._build_thumbnail(id)
+            thumbnail = self._build_thumbnail(media_id)
             is_short = "/shorts/" in url or (duration <= 60)
             formatted_duration = format_duration(duration)
             if is_short:
+                print("detected short")
                 return Short(
-                    id=id,
+                    id=media_id,
                     title=info.get("title"),
                     url=url,
                     thumbnail=thumbnail,
@@ -42,7 +43,7 @@ class YouTubeService:
                 )
 
             return Video(
-                id=id,
+                id=media_id,
                 title=info.get("title"),
                 url=url,
                 thumbnail=thumbnail,
