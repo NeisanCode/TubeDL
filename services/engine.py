@@ -2,7 +2,7 @@ import re
 import os
 from queue import Queue
 import yt_dlp
-from core import UserSettings
+from core import AppSettings
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video
@@ -39,7 +39,7 @@ class Engine:
                 self._download_playlist(self.media.url)
 
     def _download_video(self, url):
-        output_dir = UserSettings.DOWNLOAD_FOLDER
+        output_dir = AppSettings.load_download_folder()
         video_opts = {
             **self.ydl_opts,
             "format": get_format_selector(self.media.resol_selected),
@@ -53,7 +53,7 @@ class Engine:
             ydl.download([url])
 
     def _download_playlist(self, url):
-        output_dir = UserSettings.DOWNLOAD_FOLDER
+        output_dir = AppSettings.load_download_folder()
         playlist_opts = {
             **self.ydl_opts,
             "outtmpl": os.path.join(

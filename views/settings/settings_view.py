@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from views.themes.color import *
-from core import UserSettings
+from core import AppSettings
 from .widgets import SectionTitle, PathSelectorCard, CookiesCard, ThemeSelectorCard
 
 class SettingsView(ctk.CTkFrame):
@@ -24,7 +24,7 @@ class SettingsView(ctk.CTkFrame):
 
         # 1. Single Download Setup
         SectionTitle(container, "Emplacement des téléchargements").pack(anchor="w", pady=(20, 10))
-        default_dl = getattr(UserSettings, "DOWNLOAD_FOLDER", "~/Downloads")
+        default_dl = getattr(AppSettings, "DOWNLOAD_FOLDER", "~/Downloads")
         # Just one card for the main root path
         self.download_card = PathSelectorCard(container, "Dossier principal", default_dl)
         self.download_card.pack(fill="x", pady=6)

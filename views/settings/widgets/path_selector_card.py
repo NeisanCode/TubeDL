@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from tkinter import filedialog
 from views.themes.color import *
-from core import UserSettings
-from core import HelperSettings
+from core import AppSettings    
+
 
 class PathSelectorCard(ctk.CTkFrame):
     """A card layout managing path selection variables and actions."""
@@ -55,7 +55,7 @@ class PathSelectorCard(ctk.CTkFrame):
     def _browse(self):
         directory = filedialog.askdirectory()
         if not directory:
-            return 
+            return
         self.path_var.set(directory)
-        HelperSettings.save_folder_path(directory)
+        AppSettings .save_folder_path(directory)
         print("saved")

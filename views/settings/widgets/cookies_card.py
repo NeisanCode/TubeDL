@@ -1,8 +1,7 @@
 import customtkinter as ctk
 from tkinter import filedialog
 from views.themes.color import *
-from core import UserSettings
-from core import HelperSettings
+from core import AppSettings
 
 
 class CookiesCard(ctk.CTkFrame):
@@ -17,13 +16,9 @@ class CookiesCard(ctk.CTkFrame):
             border_color=BORDER,
             **kwargs,
         )
-
-        self.cookie_path_var = ctk.StringVar(
-            value=getattr(UserSettings, "COOKIES_PATH", ["", True])[0]
-        )
-        self.auto_var = ctk.BooleanVar(
-            value=getattr(UserSettings, "COOKIES_PATH", ["", True])[1]
-        )
+        cookie = AppSettings.load_cookie_file()
+        self.cookie_path_var = ctk.StringVar(value=cookie[0])
+        self.auto_var = ctk.BooleanVar(value=cookie[1])
         self._build_ui()
         self._toggle_state()
 
@@ -104,7 +99,7 @@ class CookiesCard(ctk.CTkFrame):
         else:
             self.path_row.pack(fill="x", pady=(10, 0))
 
-        HelperSettings.save_cookie(self.cookie_path_var.get(), is_auto)
+        AppSettings.save_cookie(self.cookie_path_var.get(), is_auto)
 
     def _browse(self):
         file_path = filedialog.askopenfilename(
@@ -117,4 +112,4 @@ class CookiesCard(ctk.CTkFrame):
         if not file_path:
             return
         self.cookie_path_var.set(file_path)
-        HelperSettings.save_cookie(file_path, self.auto_var.get())
+        AppSettings.save_cookie(file_path, self.auto_var.get())

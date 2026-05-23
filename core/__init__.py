@@ -1,5 +1,4 @@
 from .app_config import AppConfig
-from .app_settings import UserSettings
-from .helpers_settings import HelperSettings
+from .app_settings import AppSettings
 
-__all__ = ["AppConfig", "UserSettings", "HelperSettings"]
+__all__ = ["AppConfig", "AppSettings"]

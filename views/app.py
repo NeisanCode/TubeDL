@@ -1,11 +1,11 @@
 import customtkinter as ctk
 from views.themes.color import *
-from core import AppConfig, UserSettings
+from core import AppConfig, AppSettings
 from .widgets.sidebar import Sidebar
 from .home.home_view import HomeView
 from .settings.settings_view import SettingsView
 
-ctk.set_appearance_mode(UserSettings.DEFAULT_THEME)
+ctk.set_appearance_mode(AppSettings.load_default_theme())
 
 
 class App(ctk.CTk):
