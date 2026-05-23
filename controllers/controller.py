@@ -1,5 +1,5 @@
 from services import YouTubeService
-from services import Downloader
+from services import Engine
 from controllers.decorators import handle_error
 
 
@@ -13,5 +13,5 @@ class Controller:
     @staticmethod
     @handle_error
     def download(media, queue):
-        downloader = Downloader(media, queue)
+        downloader = Engine(media, queue)
         downloader.download_media()

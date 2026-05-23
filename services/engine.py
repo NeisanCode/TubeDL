@@ -2,7 +2,7 @@ import re
 import os
 from queue import Queue
 import yt_dlp
-from core.config import Config
+from core import UserSettings
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video
@@ -13,7 +13,7 @@ def _strip_ansi(text: str) -> str:
     return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
 
-class Downloader:
+class Engine:
     def __init__(self, media: Video | Short | Playlist, queue: Queue):
         self.media = media
         self.queue = queue
@@ -34,13 +34,12 @@ class Downloader:
             case Video():
                 self._download_video(self.media.url)
             case Short():
-                print("downloading short")
                 self._download_short(self.media.url)
             case Playlist():
                 self._download_playlist(self.media.url)
 
     def _download_video(self, url):
-        output_dir = Config.download_path
+        output_dir = UserSettings.DOWNLOAD_FOLDER
         video_opts = {
             **self.ydl_opts,
             "format": get_format_selector(self.media.resol_selected),
@@ -54,7 +53,7 @@ class Downloader:
             ydl.download([url])
 
     def _download_playlist(self, url):
-        output_dir = Config.download_path
+        output_dir = UserSettings.DOWNLOAD_FOLDER
         playlist_opts = {
             **self.ydl_opts,
             "outtmpl": os.path.join(
@@ -81,12 +80,12 @@ class Downloader:
                 downloaded = d.get("downloaded_bytes", 0)
                 total = d.get("total_bytes") or d.get("total_bytes_estimate", 0)
                 percent = (downloaded / total) if total else 0
-                
+
                 self.queue.put(
                     {
                         "percent": percent,
                         "speed": _strip_ansi(d.get("_speed_str", "—")).strip(),
-                        "current_video": current_video, # 👈 ON ENVOIE L'INDEX ICI !
+                        "current_video": current_video,  # 👈 ON ENVOIE L'INDEX ICI !
                     }
                 )
             else:
@@ -96,15 +95,20 @@ class Downloader:
                 print(
                     f"\r  ⬇ [{title}] {percent}  vitesse: {speed}", end="", flush=True
                 )
+
     def _postprocessor_hook(self, d: dict):
         print(d.get("status"), d.keys())
         if d["status"] == "finished":
             if self.queue:
                 info = d.get("info_dict", {})
-                current_video = info.get("playlist_index", 1) # 👈 Récupération de l'index
-                
-                self.queue.put({
-                    "percent": 1.0, 
-                    "speed": "✔ Terminé",
-                    "current_video": current_video # 👈 Transmis aussi ici
-                })
+                current_video = info.get(
+                    "playlist_index", 1
+                )  # 👈 Récupération de l'index
+
+                self.queue.put(
+                    {
+                        "percent": 1.0,
+                        "speed": "✔ Terminé",
+                        "current_video": current_video,  # 👈 Transmis aussi ici
+                    }
+                )

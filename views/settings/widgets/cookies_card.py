@@ -1,7 +1,9 @@
 import customtkinter as ctk
 from tkinter import filedialog
 from views.themes.color import *
-from core.config import Config
+from core import UserSettings
+from core import HelperSettings
+
 
 class CookiesCard(ctk.CTkFrame):
     """Encapsulates cookie loading files and automatic/manual states."""
@@ -16,8 +18,10 @@ class CookiesCard(ctk.CTkFrame):
             **kwargs,
         )
 
-        self.cookie_path_var = ctk.StringVar(value=getattr(Config, "cookie_path", ""))
-        self.auto_var = ctk.BooleanVar(value=getattr(Config, "cookie_auto", True))
+        self.cookie_path_var = ctk.StringVar(
+            value=getattr(UserSettings, "COOKIES_PATH", "")
+        )
+        self.auto_var = ctk.BooleanVar(value=True)
 
         self._build_ui()
         self._toggle_state()
@@ -92,6 +96,7 @@ class CookiesCard(ctk.CTkFrame):
             text="Automatique" if is_auto else "Manuel",
             text_color=PRIMARY_ACCENT if is_auto else TEXT_DARK,
         )
+        HelperSettings.save_cookie("", is_auto)
         if is_auto:
             self.path_row.pack_forget()
         else:
@@ -105,5 +110,7 @@ class CookiesCard(ctk.CTkFrame):
                 ("Tous les fichiers", "*.*"),
             ],
         )
-        if file_path:
-            self.cookie_path_var.set(file_path)
+        if not file_path:
+            return
+        self.cookie_path_var.set(file_path)
+        HelperSettings.save_cookie(file_path, self.auto_var.get())

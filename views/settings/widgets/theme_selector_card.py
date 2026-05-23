@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from views.themes.color import *
-
+from core.helpers_settings import HelperSettings
 
 
 class ThemeSelectorCard(ctk.CTkFrame):
@@ -56,3 +56,5 @@ class ThemeSelectorCard(ctk.CTkFrame):
         modes = {"Clair (Light)": "Light", "Sombre (Dark)": "Dark"}
         ctk.set_appearance_mode(modes.get(choice, "System"))
         self.winfo_toplevel().update()
+        HelperSettings.save_theme(modes.get(choice, "System"))
+

@@ -1,14 +1,17 @@
 import customtkinter as ctk
 from views.themes.color import *
+from core import AppConfig, UserSettings
 from .widgets.sidebar import Sidebar
 from .home.home_view import HomeView
 from .settings.settings_view import SettingsView
+
+ctk.set_appearance_mode(UserSettings.DEFAULT_THEME)
 
 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("TubeDL")
+        self.title(AppConfig.APP_NAME)
         self.attributes("-zoomed", True)
         self.configure(fg_color=BG_WINDOW)
         self.minsize(900, 600)

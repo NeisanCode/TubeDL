@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from views.themes.color import *
-from core.config import Config
+from core import UserSettings
 from .widgets import SectionTitle, PathSelectorCard, CookiesCard, ThemeSelectorCard
 
 class SettingsView(ctk.CTkFrame):
@@ -22,15 +22,12 @@ class SettingsView(ctk.CTkFrame):
         container = ctk.CTkScrollableFrame(self, fg_color="transparent")
         container.pack(fill="both", expand=True, padx=32, pady=10)
 
-        # 1. Downloads Setup
-        SectionTitle(container, "Emplacements de téléchargement").pack(anchor="w", pady=(20, 10))
-        
-        default_dl = getattr(Config, "download_path", "~/Downloads")
-        self.video_card = PathSelectorCard(container, "Dossier des Vidéos", default_dl)
-        self.video_card.pack(fill="x", pady=6)
-        
-        self.playlist_card = PathSelectorCard(container, "Dossier des Playlists", default_dl)
-        self.playlist_card.pack(fill="x", pady=6)
+        # 1. Single Download Setup
+        SectionTitle(container, "Emplacement des téléchargements").pack(anchor="w", pady=(20, 10))
+        default_dl = getattr(UserSettings, "DOWNLOAD_FOLDER", "~/Downloads")
+        # Just one card for the main root path
+        self.download_card = PathSelectorCard(container, "Dossier principal", default_dl)
+        self.download_card.pack(fill="x", pady=6)
 
         # 2. Cookies Setup
         SectionTitle(container, "Cookies").pack(anchor="w", pady=(20, 10))
