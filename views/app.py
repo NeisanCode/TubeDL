@@ -1,10 +1,8 @@
 import customtkinter as ctk
 from views.themes.color import *
-
-# On cible précisément les nouveaux dossiers
-from .components.sidebar import Sidebar
-from .pages.home_view import HomeView
-from .pages.settings_view import SettingsView
+from .widgets.sidebar import Sidebar
+from .home.home_view import HomeView
+from .settings.settings_view import SettingsView
 
 
 class App(ctk.CTk):
