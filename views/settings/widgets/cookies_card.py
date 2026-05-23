@@ -19,10 +19,11 @@ class CookiesCard(ctk.CTkFrame):
         )
 
         self.cookie_path_var = ctk.StringVar(
-            value=getattr(UserSettings, "COOKIES_PATH", "")
+            value=getattr(UserSettings, "COOKIES_PATH", ["", True])[0]
         )
-        self.auto_var = ctk.BooleanVar(value=True)
-
+        self.auto_var = ctk.BooleanVar(
+            value=getattr(UserSettings, "COOKIES_PATH", ["", True])[1]
+        )
         self._build_ui()
         self._toggle_state()
 
@@ -96,11 +97,14 @@ class CookiesCard(ctk.CTkFrame):
             text="Automatique" if is_auto else "Manuel",
             text_color=PRIMARY_ACCENT if is_auto else TEXT_DARK,
         )
-        HelperSettings.save_cookie("", is_auto)
+
         if is_auto:
+            self.cookie_path_var.set("")  # ✅ Reset l'affichage
             self.path_row.pack_forget()
         else:
             self.path_row.pack(fill="x", pady=(10, 0))
+
+        HelperSettings.save_cookie(self.cookie_path_var.get(), is_auto)
 
     def _browse(self):
         file_path = filedialog.askopenfilename(

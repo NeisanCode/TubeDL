@@ -57,4 +57,3 @@ class ThemeSelectorCard(ctk.CTkFrame):
         ctk.set_appearance_mode(modes.get(choice, "System"))
         self.winfo_toplevel().update()
         HelperSettings.save_theme(modes.get(choice, "System"))
-
