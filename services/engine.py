@@ -97,7 +97,6 @@ class Engine:
                 )
 
     def _postprocessor_hook(self, d: dict):
-        print(d.get("status"), d.keys())
         if d["status"] == "finished":
             if self.queue:
                 info = d.get("info_dict", {})
