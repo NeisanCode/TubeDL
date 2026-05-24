@@ -58,4 +58,3 @@ class PathSelectorCard(ctk.CTkFrame):
             return
         self.path_var.set(directory)
         AppSettings .save_folder_path(directory)
-        print("saved")
