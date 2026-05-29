@@ -57,7 +57,7 @@ def setup_check() -> bool:
     Retourne True si tout est prêt, False si setup échoué.
     """
     if platform.system() != "Windows":
-        return True  # Linux/macOS gèrent ffmpeg autrement
+        return False  # Linux/macOS gèrent ffmpeg autrement
 
     deps = check_dependencies()
     if deps["ffmpeg"]:

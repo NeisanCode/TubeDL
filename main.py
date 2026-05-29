@@ -1,7 +1,10 @@
-from views import App
+from views import App, Launcher
 from core import setup_check
+import sys
 
 setup_startup = setup_check()
-if setup_startup:
-    app = App()
-    app.mainloop()
+if not setup_startup:
+    Launcher().mainloop()
+    sys.exit()
+
+App().mainloop()

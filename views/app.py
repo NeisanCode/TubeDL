@@ -46,7 +46,3 @@ class App(ctk.CTk):
             self.settings_view.pack_forget()
             self.home_view.pack(fill="both", expand=True)
 
-
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
