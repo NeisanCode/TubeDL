@@ -12,33 +12,34 @@ def get_format_selector(res: str):
         "480p": 480,
         "360p": 360,
     }
-
     max_res = quality_map.get(res, 1080)
 
-    return f"bv*[height<={max_res}][vcodec^=avc1]+ba/" f"b[height<={max_res}]/" f"best"
-
-
-def clean_youtube_url(url):
-    parsed_url = urlparse(url)
-    query_params = parse_qs(parsed_url.query)
-    query_params.pop("list", None)
-    new_query = urlencode(query_params, doseq=True)
-    new_url = urlunparse(parsed_url._replace(query=new_query))
-    return new_url
+    # On accepte avc1 EN PRIORITÉ, mais on autorise VP9/AV1 en fallback
+    return (
+        f"bv*[height<={max_res}][vcodec^=avc1]+ba[ext=m4a]/"
+        f"bv*[height<={max_res}]+ba/"  # ← fallback sans contrainte codec
+        f"b[height<={max_res}]/"
+        f"best"
+    )
 
 
 def clean_url(url):
-    # On vérifie si c'est une URL courte avec une playlist
-    if "youtu.be/" in url and "?list=" in url:
-        # 1. On sépare la base des paramètres
-        # Exemple: ["https://youtu.be/Z2zD3EdjpNo", "list=PLKm..."]
-        parties = url.split("?")
-        url_base_avec_id = parties[0]
+    if not url:
+        return url
 
-        # L'url_base_avec_id contient déjà "https://youtu.be/ID_VIDEO"
-        # On retourne simplement cette partie
-        return url_base_avec_id
-    return url
+    parsed_url = urlparse(url)
+    query_params = parse_qs(parsed_url.query)
+
+    clean_params = {}
+    if "v" in query_params:
+        clean_params["v"] = query_params["v"]
+    if "list" in query_params:
+        clean_params["list"] = query_params["list"]
+    if "si" in query_params:
+        clean_params["si"] = query_params["si"]  # ← garde le paramètre si
+
+    new_query = urlencode(clean_params, doseq=True)
+    return urlunparse(parsed_url._replace(query=new_query))
 
 
 def format_duration(seconds):

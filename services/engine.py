@@ -1,6 +1,7 @@
 import re
 import os
 from queue import Queue
+import shutil
 import yt_dlp
 from core import AppSettings
 from models.playlist import Playlist
@@ -18,14 +19,14 @@ class Engine:
         self.media = media
         self.queue = queue
         self.ydl_opts = {
-            "quiet": False,  # ← temporairement
-            "no_warnings": True,  # ← temporairement
-            "ignoreerrors": True,  # ← temporairement
-            "progress_hooks": [self._progress_hook],
-            "postprocessor_hooks": [self._postprocessor_hook],  # ← ajoute ça
+            "format": "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo+bestaudio/best",
             "merge_output_format": "mp4",
-            "format_sort": ["res", "codec:h264"],
-            "no_overwrites": True,  # ← confirme le comportement skip
+            "ffmpeg_location": shutil.which("ffmpeg"),
+            "quiet": False,
+            "ignoreerrors": False,
+            "progress_hooks": [self._progress_hook],
+            "postprocessor_hooks": [self._postprocessor_hook],
+            **load_cookie(),
         }
 
     def download_media(self):
@@ -39,54 +40,68 @@ class Engine:
 
     def _download_video(self, url):
         output_dir = AppSettings.load_download_folder()
+
+        # On récupère la résolution choisie par l'utilisateur
+        # Si self.media.resol_selected vaut "1080p", get_format_selector va générer le bon filtre
+        format_selector = get_format_selector(self.media.resol_selected)
+
         video_opts = {
             **self.ydl_opts,
-            **load_cookie(),
-            "format": get_format_selector(self.media.resol_selected),
+            "format": format_selector,
             "outtmpl": os.path.join(output_dir, "Videos/%(title)s.%(ext)s"),
         }
+
+        print(f"📥 Téléchargement vidéo avec le format : {format_selector}")
         with yt_dlp.YoutubeDL(video_opts) as ydl:
             ydl.download([url])
 
     def _download_short(self, url):
-        with yt_dlp.YoutubeDL(self.ydl_opts) as ydl:
+        output_dir = AppSettings.load_download_folder()
+        short_opts = {
+            **self.ydl_opts,
+            "outtmpl": os.path.join(output_dir, "Shorts/%(title)s.%(ext)s"),
+        }
+        with yt_dlp.YoutubeDL(short_opts) as ydl:
             ydl.download([url])
 
     def _download_playlist(self, url):
         output_dir = AppSettings.load_download_folder()
-        playlist_opts = {
-            **self.ydl_opts,
-            **load_cookie(),
-            "outtmpl": os.path.join(
-                output_dir, "%(playlist_index)s - %(title)s.%(ext)s"
-            ),
-            "noplaylist": False,
-        }
-        with yt_dlp.YoutubeDL(playlist_opts) as ydl:
+
+        # 1. On extrait d'abord les infos de la playlist TRÈS RAPIDEMENT avec extract_flat
+        flat_opts = {**self.ydl_opts, "extract_flat": True, "quiet": True}
+        with yt_dlp.YoutubeDL(flat_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             playlist_title = info.get("title", "Playlist inconnue")
             total = len(info.get("entries", []))
             print(f"\n🎬 Playlist : {playlist_title}")
-            print(f"📦 {total} vidéo(s) à télécharger\n")
+            print(f"📦 {total} vidéo(s) détectée(s)\n")
+
+        # 2. On lance le téléchargement réel sans extract_flat
+        playlist_opts = {
+            **self.ydl_opts,
+            "outtmpl": os.path.join(
+                output_dir,
+                "Playlists/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s",
+            ),
+            "noplaylist": False,
+        }
+        with yt_dlp.YoutubeDL(playlist_opts) as ydl:
             ydl.download([url])
 
     def _progress_hook(self, d: dict):
         if d["status"] == "downloading":
-            # On extrait le numéro de la vidéo actuelle depuis l'info_dict de yt-dlp
             info = d.get("info_dict", {})
-            # 'playlist_index' donne la position de la vidéo (ex: 1, 2, 3...)
             current_video = info.get("playlist_index", 1)
 
             if self.queue:
                 downloaded = d.get("downloaded_bytes", 0)
                 total = d.get("total_bytes") or d.get("total_bytes_estimate", 0)
                 percent = (downloaded / total) if total else 0
-
                 self.queue.put(
                     {
                         "percent": percent,
                         "speed": _strip_ansi(d.get("_speed_str", "—")).strip(),
-                        "current_video": current_video,  # 👈 ON ENVOIE L'INDEX ICI !
+                        "current_video": current_video,
                     }
                 )
             else:
@@ -101,14 +116,11 @@ class Engine:
         if d["status"] == "finished":
             if self.queue:
                 info = d.get("info_dict", {})
-                current_video = info.get(
-                    "playlist_index", 1
-                )  # 👈 Récupération de l'index
-
+                current_video = info.get("playlist_index", 1)
                 self.queue.put(
                     {
                         "percent": 1.0,
                         "speed": "✔ Terminé",
-                        "current_video": current_video,  # 👈 Transmis aussi ici
+                        "current_video": current_video,
                     }
                 )

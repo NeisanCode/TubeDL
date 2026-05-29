@@ -1,3 +1,4 @@
+from pprint import pprint 
 import customtkinter as ctk
 from .popup import DownloaderPopup
 from views.themes.color import *
@@ -66,6 +67,7 @@ class SearchBar(ctk.CTkFrame):
             on_download=lambda q: self._on_download_callback(media, q),
         )
         self.after(0, popup.popup)
+        # pprint(media.__dict__)
 
     def set_loading(self, loading: bool):
         if loading:

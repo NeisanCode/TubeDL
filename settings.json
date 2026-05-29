@@ -1,5 +1,8 @@
 {
-  "download_folder": "/home/neisan/Videos",
-  "cookie_file": ["", true],
-  "theme": "System"
+    "download_folder": "/home/neisan/Videos",
+    "cookie_file": [
+        "",
+        false
+    ],
+    "theme": "System"
 }
