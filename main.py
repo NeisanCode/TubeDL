@@ -1,5 +1,7 @@
 from views import App
+from core import setup_check
 
-if __name__ == "__main__":
+setup_startup = setup_check()
+if setup_startup:
     app = App()
     app.mainloop()

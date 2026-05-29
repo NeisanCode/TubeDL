@@ -3,7 +3,7 @@ import os
 from queue import Queue
 import shutil
 import yt_dlp
-from core import AppSettings
+from core import AppSettings, AppConfig
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video
@@ -21,7 +21,7 @@ class Engine:
         self.ydl_opts = {
             "format": "bestvideo[ext=mp4][vcodec^=avc1]+bestaudio[ext=m4a]/bestvideo+bestaudio/best",
             "merge_output_format": "mp4",
-            "ffmpeg_location": shutil.which("ffmpeg"),
+            "ffmpeg_location": AppConfig.FFMPEG_BINARY_DIR,
             "quiet": False,
             "ignoreerrors": False,
             "progress_hooks": [self._progress_hook],
@@ -40,11 +40,7 @@ class Engine:
 
     def _download_video(self, url):
         output_dir = AppSettings.load_download_folder()
-
-        # On récupère la résolution choisie par l'utilisateur
-        # Si self.media.resol_selected vaut "1080p", get_format_selector va générer le bon filtre
         format_selector = get_format_selector(self.media.resol_selected)
-
         video_opts = {
             **self.ydl_opts,
             "format": format_selector,

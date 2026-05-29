@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+import shutil
 
 
 @dataclass(frozen=True)
 class AppConfig:
     APP_NAME: str = "TubeDL"
     VERSION: str = "1.0.0"
-    FFMPEG_BINARY_DIR: str = ""
-    
+    FFMPEG_BINARY_DIR: str = shutil.which("ffmpeg")

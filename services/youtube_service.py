@@ -1,7 +1,6 @@
-from pprint import pprint
 import yt_dlp
 from .helpers import load_cookie, format_duration
-from models import Video, Short, Playlist
+from models import Video, Short
 from services.helpers import clean_url
 
 

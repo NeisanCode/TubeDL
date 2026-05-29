@@ -5,8 +5,6 @@ from models import Video, Short, Playlist
 from views.themes.color import *
 from .widgets import SearchBar, VideoCard, PlaylistCard
 
-
-
 class HomeView(ctk.CTkFrame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, fg_color="transparent", **kwargs)
@@ -17,7 +15,6 @@ class HomeView(ctk.CTkFrame):
         # Header
         header = ctk.CTkFrame(self, fg_color="transparent")
         header.pack(fill="x", padx=32, pady=(32, 0))
-
         ctk.CTkLabel(
             header,
             text="Tableau de bord",
