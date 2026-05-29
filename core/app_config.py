@@ -5,6 +5,5 @@ from dataclasses import dataclass
 class AppConfig:
     APP_NAME: str = "TubeDL"
     VERSION: str = "1.0.0"
-
     FFMPEG_BINARY_DIR: str = ""
     

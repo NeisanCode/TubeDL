@@ -1,4 +1,5 @@
 from urllib.parse import urlencode, urlparse, parse_qs, urlunparse
+from core import AppSettings
 
 
 def get_format_selector(res: str):
@@ -49,3 +50,13 @@ def format_duration(seconds):
     if h:
         return f"{h}:{m:02}:{s:02}"
     return f"{m}:{s:02}"
+
+
+def load_cookie():
+    cookie_file = AppSettings.load_cookie_file()[0]
+    cookie_config = (
+        {f"cookiefile": cookie_file}
+        if cookie_file
+        else {"cookiefrombrowser": ("chrome",)}
+    )
+    return cookie_config

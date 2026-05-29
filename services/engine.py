@@ -6,7 +6,7 @@ from core import AppSettings
 from models.playlist import Playlist
 from models.short import Short
 from models.video import Video
-from .helpers import get_format_selector
+from .helpers import get_format_selector, load_cookie
 
 
 def _strip_ansi(text: str) -> str:
@@ -23,7 +23,6 @@ class Engine:
             "ignoreerrors": True,  # ← temporairement
             "progress_hooks": [self._progress_hook],
             "postprocessor_hooks": [self._postprocessor_hook],  # ← ajoute ça
-            "cookiefile": "cookies/cookies.txt",  # ← commente ça
             "merge_output_format": "mp4",
             "format_sort": ["res", "codec:h264"],
             "no_overwrites": True,  # ← confirme le comportement skip
@@ -42,6 +41,7 @@ class Engine:
         output_dir = AppSettings.load_download_folder()
         video_opts = {
             **self.ydl_opts,
+            **load_cookie(),
             "format": get_format_selector(self.media.resol_selected),
             "outtmpl": os.path.join(output_dir, "Videos/%(title)s.%(ext)s"),
         }
@@ -56,6 +56,7 @@ class Engine:
         output_dir = AppSettings.load_download_folder()
         playlist_opts = {
             **self.ydl_opts,
+            **load_cookie(),
             "outtmpl": os.path.join(
                 output_dir, "%(playlist_index)s - %(title)s.%(ext)s"
             ),
