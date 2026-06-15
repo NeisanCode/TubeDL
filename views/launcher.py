@@ -13,9 +13,13 @@ class Launcher(ctk.CTk):
         self.configure(fg_color=BG_WINDOW)
         self.minsize(900, 600)
         MID_SIZE = "1100x700"
+        self._build()
 
         def on_minimize(event):
             if self.state() == "iconic":
                 self.after(100, lambda: self.geometry(MID_SIZE))
 
         self.bind("<Unmap>", on_minimize)
+
+    def _build(self):
+        pass
