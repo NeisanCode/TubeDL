@@ -27,17 +27,23 @@ Il a été crée parce que de nombreux logiciel similaire sont payant ou les ver
 
 Télécharge la dernière version selon ton système :
 
+
 | Système | Fichier                |
 | ------- | ---------------------- |
 | Windows | `youtube-dl-setup.exe` |
 | macOS   | `youtube-dl.dmg`       |
 | Linux   | `youtube-dl.AppImage`  |
 
+
 👉 [Voir toutes les releases](https://github.com/ton-user/ton-projet/releases)
 
 ### 🧑‍💻 Développeurs — Lancer depuis le code source
 
-**Prérequis :** Python 3.10+, ffmpeg, uv
+**Prérequis :** 
+
+- [Python 3.10+](https://www.python.org/downloads/)
+- [FFmpeg](https://ffmpeg.org/download.html)
+- [uv](https://docs.astral.sh/uv/#installation)
 
 ##### Cloner le dépôt
 
@@ -59,3 +65,4 @@ Télécharge la dernière version selon ton système :
 ```
 
 > 💡 Le projet utilise [yt-dlp](https://github.com/yt-dlp/yt-dlp) en backend.
+
