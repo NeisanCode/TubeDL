@@ -22,3 +22,8 @@ cookies/
 # folders
 bin/
 cookies/
+
+# files
+settings.json
+test.py
+tempCodeRunnerFile.py
